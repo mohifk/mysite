@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
 {% load static %}
+{% load blog_tags %}
+{% load humanize %}
 {%block content%}
 
     <!-- Header -->
@@ -94,7 +96,7 @@
                       <ul class="post-info">
                         <li><a href="#">Admin</a></li>
                         <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
-                        <li><a href="#">10 Comments</a></li>
+                        <li><a href="#">{{comments|length}} Comments</a></li>
                       </ul>
                       <p>{{post.content|safe}}
                       </p>
@@ -102,9 +104,12 @@
                         <div class="row">
                           <div class="col-6">
                             <ul class="post-tags">
+                              {% for cat in post.category.all %}
                               <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
+                              <li><a href="{% url 'blog:category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last %},</li>
+                              {% endif %} 
+						
+                              {% endfor %}
                             </ul>
                           </div>
                           <div class="col-6">
@@ -122,46 +127,25 @@
                 <div class="col-lg-12">
                   <div class="sidebar-item comments">
                     <div class="sidebar-heading">
-                      <h2>4 comments</h2>
+                      <h2>{{comments|length}} comments</h2>
                     </div>
+                    {% for comment in comments %}
                     <div class="content">
+                    
                       <ul>
                         <li>
                           <div class="author-thumb">
-                            <img src="assets/images/comment-author-01.jpg" alt="">
+                            <img src="{%static 'assets/images/comment-author-01.jpg'%}" alt="">
                           </div>
                           <div class="right-content">
-                            <h4>Charles Kate<span>May 16, 2020</span></h4>
-                            <p>Fusce ornare mollis eros. Duis et diam vitae justo fringilla condimentum eu quis leo. Vestibulum id turpis porttitor sapien facilisis scelerisque. Curabitur a nisl eu lacus convallis eleifend posuere id tellus.</p>
+                            <h4>{{comment.name}}<span>{{comment.create_date|naturalday}}</span></h4>
+                            <p>{{comment.message}}</p>
                           </div>
                         </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="assets/images/comment-author-02.jpg" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 20, 2020</span></h4>
-                            <p>In porta urna sed venenatis sollicitudin. Praesent urna sem, pulvinar vel mattis eget.</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="author-thumb">
-                            <img src="assets/images/comment-author-03.jpg" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Belisimo Mama<span>May 16, 2020</span></h4>
-                            <p>Nullam nec pharetra nibh. Cras tortor nulla, faucibus id tincidunt in, ultrices eget ligula. Sed vitae suscipit ligula. Vestibulum id turpis volutpat, lobortis turpis ac, molestie nibh.</p>
-                          </div>
-                        </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="assets/images/comment-author-02.jpg" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 22, 2020</span></h4>
-                            <p>Mauris sit amet justo vulputate, cursus massa congue, vestibulum odio. Aenean elit nunc, gravida in erat sit amet, feugiat viverra leo.</p>
-                          </div>
-                        </li>
+                        {% empty %}
+                        <p> no comments here be the first one </p>
+                        {% endfor %}
+                     
                       </ul>
                     </div>
                   </div>
@@ -172,26 +156,35 @@
                       <h2>Your comment</h2>
                     </div>
                     <div class="content">
-                      <form id="comment" action="#" method="post">
+                      
+                      
+                      <form id="comment" action='{% url "blog:single" pid=post.id %}' method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="post" value={{post.id}}>
+                        {% if request.user.is_authenticated %}
+                        <input type="hidden" name="name" value={{request.user.first_name}}>
+						            <input type="hidden" name="email" value={{request.user.email}}>
+                        {% else %}
                         <div class="row">
                           <div class="col-md-6 col-sm-12">
                             <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your name" required="">
+                              <input name="name" type="text"  placeholder="Your name" required="">
                             </fieldset>
                           </div>
                           <div class="col-md-6 col-sm-12">
                             <fieldset>
-                              <input name="email" type="text" id="email" placeholder="Your email" required="">
+                              <input name="email" type="text"  placeholder="Your email" required="">
                             </fieldset>
                           </div>
                           <div class="col-md-12 col-sm-12">
+                            {% endif %}
                             <fieldset>
-                              <input name="subject" type="text" id="subject" placeholder="Subject">
+                              <input name="subject" type="text"  placeholder="Subject">
                             </fieldset>
                           </div>
                           <div class="col-lg-12">
                             <fieldset>
-                              <textarea name="message" rows="6" id="message" placeholder="Type your comment" required=""></textarea>
+                              <textarea name="message" rows="6"  placeholder="Type your comment" required=""></textarea>
                             </fieldset>
                           </div>
                           <div class="col-lg-12">
@@ -211,69 +204,16 @@
             <div class="sidebar">
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="sidebar-item search">
-                    <form id="search_form" name="gs" method="GET" action="#">
-                      <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
-                    </form>
-                  </div>
+                  {% include 'blog_temp/blog_search.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item recent-posts">
-                    <div class="sidebar-heading">
-                      <h2>Recent Posts</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="post-details.html">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
-                        </a></li>
-                        <li><a href="post-details.html">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="post-details.html">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  {% include 'blog_temp/blog-lastest-post.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item categories">
-                    <div class="sidebar-heading">
-                      <h2>Categories</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                {% include 'blog_temp/blog-post-category.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item tags">
-                    <div class="sidebar-heading">
-                      <h2>Tag Clouds</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="#">Lifestyle</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Motivation</a></li>
-                        <li><a href="#">PSD</a></li>
-                        <li><a href="#">Responsive</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  {% include 'blog_temp/blog_tag.html' %}	
                 </div>
               </div>
             </div>

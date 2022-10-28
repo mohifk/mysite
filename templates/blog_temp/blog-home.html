@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
 {% load static %}
+{% load blog_tags %}
+
 {%block content%}
 
     <!-- Header -->
@@ -90,13 +92,18 @@
                       <img src="{{post.image.url}}" alt="">
                     </div>
                     <div class="down-content">
-                      <span>Lifestyle</span>
+                      {% for cat in post.category.all %}
+                      <span><a href=""><a href="{% url 'blog:category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last %},
+                        {% endif %} 
+                        
+                        {% endfor %}
+                      </a></span>
                       <a href="{%url 'blog:single' pid=post.id%}"><h4>{{post.title}}</h4></a>
                       <ul class="post-info">
                         <li><a href="{% url 'blog:author' author_username=post.author.username %}">{{post.author.get_full_name}}</a></li>
                         <li><a href="#">{{post.count_views}} Views</a></li>
                         <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
-                        <li><a href="#">12 Comments</a></li>
+                        <li><a href="#">{% comments_count post.id %} Comments</a></li>
                       </ul>
                       <p>{{post.content|truncatewords:5}}</p>
                       <div class="post-options">
@@ -117,11 +124,37 @@
 
                 <div class="col-lg-12">
                   <ul class="page-numbers">
-                    <li><a href="#">1</a></li>
-                    <li class="active"><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                    
+                    
+                      {% if posts.has_previous %}
+                      <li class="page-item">
+                        <a href="?page={{ posts.previous_page_number }}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                <span class="lnr lnr-chevron-left"></span>
+                            </span>
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% for i in posts.paginator.page_range %}
+                      {% if posts.number == i %}
+                      <li class="page-item active"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                      {% else %}
+                      <li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                      {% endif %}
+                      {% endfor %}
+                      {% if posts.has_next %}
+                          <li class="page-item">
+                              <a href="?page={{ posts.next_page_number }}" class="page-link" aria-label="Next">
+                                  <span aria-hidden="true">
+                                      <span class="lnr lnr-chevron-right"></span>
+                                 </span>
+                              </a>
+                           </li>
+                      {% endif %}
+
+
                   </ul>
+
                 </div>
               </div>
             </div>
@@ -130,69 +163,16 @@
             <div class="sidebar">
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="sidebar-item search">
-                    <form id="search_form" name="gs" method="GET" action="#">
-                      <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
-                    </form>
-                  </div>
+                  {% include 'blog_temp/blog_search.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item recent-posts">
-                    <div class="sidebar-heading">
-                      <h2>Recent Posts</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="post-details.html">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
-                        </a></li>
-                        <li><a href="post-details.html">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="post-details.html">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  {% include 'blog_temp/blog-lastest-post.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item categories">
-                    <div class="sidebar-heading">
-                      <h2>Categories</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                {% include 'blog_temp/blog-post-category.html' %}
                 </div>
                 <div class="col-lg-12">
-                  <div class="sidebar-item tags">
-                    <div class="sidebar-heading">
-                      <h2>Tag Clouds</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="#">Lifestyle</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Motivation</a></li>
-                        <li><a href="#">PSD</a></li>
-                        <li><a href="#">Responsive</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  {% include 'blog_temp/blog_tag.html' %}	
                 </div>
               </div>
             </div>

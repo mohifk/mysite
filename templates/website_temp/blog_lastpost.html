@@ -1,0 +1,24 @@
+{% load static %}
+{% for post in posts %}
+<div class="item">
+    <img src="{{post.image.url}}" alt="">
+    <div class="item-content">
+      <div class="main-content">
+        <div class="meta-category">
+        {% for cat in post.category.all %}
+          <span>{{cat.name}}</span>{% if not forloop.last %},
+          {% endif %} 
+            
+          {% endfor %}
+        </div>
+        <a href="{% url 'blog:single' pid=post.id %}"><h4>{{post.title}}</h4></a>
+        <ul class="post-info">
+          <li><a href="#">Admin</a></li>
+          <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
+          <li><a href="#">{{comments|length}}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}

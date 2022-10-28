@@ -1,0 +1,9 @@
+<ul>
+
+    {%  for post in posts   %}
+    {% if post.id.has_next %}
+    {% url 'blog:single' pid=post.id %}"
+    {% endif %}
+    {%  endfor  %}
+
+</ul>
