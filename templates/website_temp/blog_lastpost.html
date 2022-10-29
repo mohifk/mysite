@@ -15,7 +15,7 @@
         </div>
         <a href="{% url 'blog:single' pid=post.id %}"><h4>{{post.title}}</h4></a>
         <ul class="post-info">
-          <li><a href="#">Admin</a></li>
+          <li><a href="#">{{post.author.get_full_name}}</a></li>
           <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
           <li><a href="#">{{comments|length}} Comments</a></li>
           <li><a href="#">{{post.count_views}} Views</a></li>

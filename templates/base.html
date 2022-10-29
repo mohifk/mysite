@@ -41,6 +41,23 @@ https://templatemo.com/tm-551-stand-blog
 
       {% endif %}
     <!-- ***** Preloader Start ***** -->
+    
+          <div class="col-lg-12">
+            <div class="copyright-text">
+              {% if request.user.is_authenticated %}
+              <p>Login as {{request.user.username}}
+             
+                    
+                  <a rel="nofollow" href="{% url 'accounts:logout' %}" target="_parent">Logout</a></p>
+              
+              {% else %}
+              <a rel="" href="{% url 'accounts:login' %}" target="">Login</a>    or   
+              
+              <a rel="" href="{% url 'accounts:signup' %}" target="">Signup</a>
+              {% endif %}
+            </div>
+
+      
     <div id="preloader">
         <div class="jumper">
             <div></div>
@@ -83,6 +100,7 @@ https://templatemo.com/tm-551-stand-blog
                 <p>
                        <a rel="nofollow" href="{% url 'accounts:signup' %}" target="_parent">Signup</a></p>
                 {% endif %}
+                <p> | Design: <a rel="nofollow" href="#" target="_parent">Mohi FK</a></p></p>
               </div>
             </div>
           </div>

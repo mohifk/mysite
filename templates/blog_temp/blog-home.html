@@ -90,7 +90,7 @@
                 <div class="col-lg-6">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="{{post.image.url}}" alt="">
+                      <a href="{%url 'blog:single' pid=post.id%}"><img src="{{post.image.url}}" alt="">
                     </div>
                     <div class="down-content">
                       {% for cat in post.category.all %}
