@@ -7,6 +7,10 @@ from django.http import HttpResponseRedirect
 from blog.forms import CommentForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
+
+
 
 def blog_view(request,**kwargs):
     posts=Post.objects.filter(publish_date__lte=timezone.now(),status=1) 
@@ -16,7 +20,7 @@ def blog_view(request,**kwargs):
         posts=posts.filter(author__username=kwargs['author_username'])
     if kwargs.get('tag_name') !=None:
         posts=posts.filter(tags__name__in=[kwargs['tag_name']])
-    posts= Paginator(posts,3)
+    posts= Paginator(posts,4)
     try:
         page_number = request.GET.get('page')
         posts=posts.get_page(page_number)
@@ -24,7 +28,7 @@ def blog_view(request,**kwargs):
         posts=posts.get_page(1)
     except EmptyPage:
         posts=posts.get_page(1)
-    context={'posts':posts}                                  ## the means is evry where {%posts%} means posts
+    context={'posts':posts}                                
     return render(request,'blog_temp/blog-home.html',context)
 
 
@@ -52,11 +56,10 @@ def blog_single(request,pid):
     elif request.user.is_authenticated:
         post_.count_views+=1
         post_.save()   
-     
         comments=Comment.objects.filter(post=post_.id,approved=1)  
         form= CommentForm()      
-        context={'post':post_,'comments':comments,'form':form} 
-    return render(request,'blog_temp/blog-single.html',context)
+        context={'post':post_,'comments':comments,'form':form}
+        return render(request,'blog_temp/blog-single.html',context)
 
 
 def blog_search(request):

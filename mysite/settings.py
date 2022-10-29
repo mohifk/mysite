@@ -30,7 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
+    'multi_captcha_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
 
+    'compressor',
     'django_extensions',
     'django_summernote',
-    'taggit',
+    "taggit",
     'captcha',
     'blog',
     'debug_toolbar',
@@ -51,12 +55,13 @@ INSTALLED_APPS = [
     'accounts',
 ]
 #site framwork
+
 SITE_ID = 2
 #robots
 ROBOTS_USE_HOST = True
 ROBOTS_USE_SITEMAP = True
 #Summernote Config
-SUMMERNOTE_THEME = 'bs5'
+SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode, default
     'iframe': True,
@@ -88,6 +93,10 @@ SUMMERNOTE_CONFIG = {
         }
     }
 
+#captcha admin settings
+MULTI_CAPTCHA_ADMIN = {
+    'engine': 'simple-captcha',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -185,8 +194,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-
+COMPRESS_ROOT= STATIC_Root
 X_FRAME_OPTIONS = 'SAMEORIGIN' 
 
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
 

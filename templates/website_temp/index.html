@@ -1,6 +1,8 @@
 {%extends 'base.html'%}
 {% load static %}
+{% load blog_tags %}
 {% load home_tags %}
+{% load humanize %}
 
 {%block content%}
 
@@ -99,17 +101,11 @@
           <div class="col-lg-4">
             <div class="sidebar">
               <div class="row">
-                <div class="col-lg-12">
-                  {% include 'blog_temp/blog_search.html' %}
+                {% include 'blog_temp/blog_search.html' %}
+                {% include 'blog_temp/blog-lastest-post.html' %}
+                {% postcategories %}
+                
                 </div>
-                <div class="col-lg-12">
-                  {% include 'blog_temp/blog-lastest-post.html' %}
-                </div>
-                <div class="col-lg-12">
-                {% include 'blog_temp/blog-post-category.html' %}
-                </div>
-                <div class="col-lg-12">
-                  {% include 'blog_temp/blog_tag.html' %}	
               </div>
             </div>
           </div>

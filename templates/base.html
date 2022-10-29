@@ -1,4 +1,5 @@
 {% load static %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 
     <title>Stand Blog - Contact Page</title>
-
+    {% compress css %}
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
 
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css'%}">
     <link rel="stylesheet" href="{% static 'assets/css/templatemo-stand-blog.css'%}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.css'%}">
+    {% endcompress %}
 <!--
 
 TemplateMo 551 Stand Blog
@@ -87,7 +89,7 @@ https://templatemo.com/tm-551-stand-blog
         </div>
       </footer>
 
-      
+      {% compress js %}
   
       <!-- Bootstrap core JavaScript -->
       <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
@@ -99,7 +101,7 @@ https://templatemo.com/tm-551-stand-blog
       <script src="{% static 'assets/js/slick.js'%}"></script>
       <script src="{% static 'assets/js/isotope.js'%}"></script>
       <script src="{% static 'assets/js/accordions.js'%}"></script>
-  
+      {% endcompress %}
       <script language = "text/Javascript"> 
         cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
         function clearField(t){                   //declaring the array outside of the

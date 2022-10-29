@@ -12,16 +12,17 @@
       <ul class="post-info">
         <li><a href="#">Admin</a></li>
         <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
-        <li><a href="#">{{comments|length}}</a></li>
+        <li><a href="#">{{comments|length}} Comments</a></li>
+        <li><a href="#">{{post.count_views}} Views</a></li>
       </ul>
       <p>{{post.content|safe}} <a rel="nofollow" href="#" target="_parent"></a> </p>
       <div class="post-options">
         <div class="row">
           <div class="col-6">
             <ul class="post-tags">
-              {% for cat in post.category.all %}
+              {% for tag in post.tags.all %}
               <li><i class="fa fa-tags"></i></li>
-              <li><a href="{% url 'blog:category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last %},</li>
+              <li><a href="{% url 'blog:tag' tag_name=tag.name %}">{{tag.name}}</a>{% if not forloop.last %},</li>
               {% endif %} 
 
               {% endfor %}
