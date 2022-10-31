@@ -14,10 +14,15 @@ SITE_ID = 2
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mohifkco_bloger',
+        'USER': 'mohifkco_mohi',
+        'PASSWORD': 'p,In3gOc4&K2',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
 
 
 STATIC_Root=BASE_DIR/'static'
