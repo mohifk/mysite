@@ -8,7 +8,12 @@
         <ul>
           
       {% for name,count in categories.items %}
-      <li><a href="{% url 'blog:category' cat_name=name %}">- {{name}}</a></li>
+      <li>
+        <a href="{% url 'blog:category' cat_name=name %}" class="d-flex justify-content-between">
+            <p>-{{name}}</p>
+            <p>{{count}}</p>
+        </a>
+    </li>
               
       {% endfor %}         
         </ul>
