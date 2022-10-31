@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-w3er8%fui$5$6b7gy+i!@bev=za9t!3d5ovv@3(91y7(^^h9)9
 DEBUG = False
 #DEBUG = True
 
-ALLOWED_HOSTS = ['mohifk.com','www.mohifk.com','127.0.0.1']
+ALLOWED_HOSTS = ['mohifk.com','www.mohifk.com','127.0.0.1','mohifk.ir','www.mohifk.ir']
 
 SITE_ID = 2
 
