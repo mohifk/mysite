@@ -28,6 +28,10 @@ DATABASES = {
 STATIC_Root=BASE_DIR/'static'
 MEDIA_Root=BASE_DIR/'media'
 
+# STATIC_Root = '/home/mohifkir/public_html/static'
+# MEDIA_Root = '/home/mohifkir/public_html/media'
+
+
 
 STATICFILES_DIRS = [
     BASE_DIR / "statics",

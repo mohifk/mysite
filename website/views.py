@@ -12,10 +12,10 @@ def Home_page_view(request,**kwargs):
     if kwargs.get('tag_name') !=None:
         posts=posts.filter(tags__name__in=[kwargs['tag_name']])
     context={'posts':posts}
-    return render(request,'.\website_temp\index.html',context)
+    return render(request,'website_temp/index.html',context)
 
 def about_view(request):
-    return render(request ,'.\website_temp\\about.html')
+    return render(request ,'website_temp/about.html')
 
 def contact_view(request):
     if request.method == 'POST':
@@ -29,5 +29,5 @@ def contact_view(request):
         else:
             messages.add_message(request,messages.ERROR,'Sorry Dude your tiket dident submit')
     form = ContactForm()
-    return render(request,'.\website_temp\contact.html',{'form':form})
+    return render(request,'website_temp/contact.html',{'form':form})
 
