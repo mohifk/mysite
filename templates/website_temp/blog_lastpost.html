@@ -1,4 +1,6 @@
 {% load static %}
+{% load humanize %}
+{% load blog_tags %}
 {% for post in posts %}
 <div class="item">
     <img src="{{post.image.url}}" alt="">
@@ -17,7 +19,7 @@
         <ul class="post-info">
           <li><a href="#">{{post.author.get_full_name}}</a></li>
           <li><a href="#">{{post.publish_date|date:"d M Y"}}</a></li>
-          <li><a href="#">{{comments|length}} Comments</a></li>
+          <li><a href="#">{% comments_count post.id %} Comments</a></li>
           <li><a href="#">{{post.count_views}} Views</a></li>
         </ul>
       </div>
